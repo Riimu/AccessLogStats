@@ -1,0 +1,110 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "a76586e48c8c729c3cbccd138488643f",
+    "packages": [
+        {
+            "name": "riimu/kit-classloader",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Riimu/Kit-ClassLoader.git",
+                "reference": "364e0d7967c62d4496eb70f694e068f1fd582c4d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Riimu/Kit-ClassLoader/zipball/364e0d7967c62d4496eb70f694e068f1fd582c4d",
+                "reference": "364e0d7967c62d4496eb70f694e068f1fd582c4d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Riimu\\Kit\\ClassLoader": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Riikka Kalliomäki",
+                    "email": "riikka.kalliomaki@gmail.com",
+                    "homepage": "http://riimu.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Class autoloading with support for PSR-0 autoloading",
+            "keywords": [
+                "autoloading",
+                "psr-0"
+            ],
+            "time": "2013-03-20 13:54:59"
+        },
+        {
+            "name": "riimu/kit-urlparser",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Riimu/Kit-UrlParser.git",
+                "reference": "dde5eb58ebaf59226dfe5eb2066b13901aef8b65"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Riimu/Kit-UrlParser/zipball/dde5eb58ebaf59226dfe5eb2066b13901aef8b65",
+                "reference": "dde5eb58ebaf59226dfe5eb2066b13901aef8b65",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Riimu\\Kit\\UrlParser": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Riikka Kalliomäki",
+                    "email": "riikka.kalliomaki@gmail.com",
+                    "homepage": "http://riimu.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "RFC 3986 compliant url parsing library",
+            "keywords": [
+                "parsing",
+                "rfc3986",
+                "url"
+            ],
+            "time": "2013-10-21 18:59:58"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": [
+
+    ],
+    "platform": [
+
+    ],
+    "platform-dev": [
+
+    ]
+}

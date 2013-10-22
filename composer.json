@@ -1,0 +1,6 @@
+{
+    "require" : {
+        "riimu/kit-classloader" : "2.0.0",
+        "riimu/kit-urlparser" : "1.0.0"
+    }
+}

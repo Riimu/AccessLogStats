@@ -10,77 +10,46 @@ namespace Riimu\LogParser\Source;
 class AccessLogSource implements DataSource
 {
     private $path;
-    private $fp;
+    private $file;
+    private $parser;
 
     public function __construct($path)
     {
         $this->path = $path;
-        $this->fp = null;
+        $this->file = null;
+        $this->parser = null;
+    }
+
+    public function setParser(Parser\RowParser $parser)
+    {
+        $this->parser = $parser;
     }
 
     public function open()
     {
-        $this->fp = fopen($this->path, 'r');
+        $this->file = new \SplFileObject($this->path);
     }
 
     public function getNext()
     {
-        $row = fgets($this->fp);
+        do {
+            if ($this->file->eof()) {
+                return false;
+            }
 
-        if ($row === false) {
-            return false;
-        }
+            $row = trim($this->file->fgets());
+        } while ($row == '');
 
-        return new AccessLogRow($row);
+        return $this->parser->parseRow($row);
     }
 
     public function close()
     {
-        fclose($this->fp);
-    }
-}
-
-class AccessLogRow implements \Riimu\LogParser\LogRow
-{
-    private $row;
-    private $ip;
-    private $ident;
-    private $time;
-    private $request;
-    private $code;
-    private $size;
-    private $referrer;
-    private $agent;
-
-    public function __construct($row)
-    {
-        $row = trim($row);
-        $this->row = $row;
-
-        preg_match('/^([^ ]+) ([^ ]+) ([^ ]+) \[([^\]]+)\] "([^"]+)" ([^ ]+) ([^ ]+) "([^"]+)" "([^"]+)"/', $row, $match);
-        $this->ip = $match[1];
-        $this->domain = $match[2];
-        $this->ident = $match[3];
-        $this->time = $match[4];
-        $this->request = $match[5];
-        $this->code = $match[6];
-        $this->size = $match[7];
-        $this->referrer = $match[8];
-        $this->agent = $match[9];
+        $this->file = null;
     }
 
-    public function getDomain()
+    public function getProgress()
     {
-        return $this->domain;
-    }
-
-    public function getReferrer()
-    {
-        return $this->referrer === '-' ? false : $this->referrer;
-    }
-
-    public function getDate()
-    {
-        return new \DateTime($this->time);
+        return $this->file->ftell() / $this->file->getSize();
     }
 }

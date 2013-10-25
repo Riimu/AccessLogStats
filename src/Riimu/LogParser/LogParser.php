@@ -63,8 +63,9 @@ class LogParser
         $min = floor($seconds / 60);
         $sec = $seconds % 60;
         $mem = round(memory_get_usage() / 1024 / 1024, 2);
+        $per = floor($this->source->getProgress() * 100);
 
-        echo "$rowNumber rows, $min min $sec sec, $mem mb\n";
+        echo "$rowNumber rows, $per%, $min min $sec sec, $mem mb" . PHP_EOL;
     }
 
     public function saveJSON()
@@ -84,6 +85,7 @@ class LogParser
                 $fname = $path . DIRECTORY_SEPARATOR . $this->sanitizePath($view->getName()) . ".json";
                 $reportInfo['views'][] = [
                     'name' => $view->getName(),
+                    'type' => get_class($view),
                     'file' => $fname,
                 ];
 

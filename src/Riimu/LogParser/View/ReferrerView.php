@@ -11,6 +11,7 @@ class ReferrerView implements DataView
 {
     private $parser;
     private $internalDomains;
+    private $includeInternalTraffic;
 
     private $directCount;
     private $internalCount;
@@ -19,6 +20,7 @@ class ReferrerView implements DataView
     private $referrers;
     private $internals;
     private $domains;
+    private $targets;
     private $other;
 
     private $cache;
@@ -27,6 +29,7 @@ class ReferrerView implements DataView
     {
         $this->parser = new \Riimu\Kit\UrlParser\UrlParser();
         $this->internalDomains = [];
+        $this->includeInternalTraffic = true;
 
         $this->directCount = 0;
         $this->internalCount = 0;
@@ -35,6 +38,7 @@ class ReferrerView implements DataView
         $this->referrers = [];
         $this->internals = [];
         $this->domains = [];
+        $this->targets = [];
         $this->other = [];
 
         $this->cache = [];
@@ -43,6 +47,12 @@ class ReferrerView implements DataView
     public function addInternalDomain($domain)
     {
         $this->internalDomains[] = $domain;
+        return $this;
+    }
+
+    public function setIncludeInternalTraffic($state)
+    {
+        $this->includeInternalTraffic = (bool) $state;
         return $this;
     }
 
@@ -58,8 +68,9 @@ class ReferrerView implements DataView
             'internalCount' => $this->internalCount,
             'referredCount' => $this->referredCount,
             'referrers' => $this->referrers,
-            'internal' => $this->internals,
             'domains' => $this->domains,
+            'targets' => $this->targets,
+            'internal' => $this->internals,
             'other' => $this->other,
         ];
     }
@@ -93,22 +104,25 @@ class ReferrerView implements DataView
         }
 
         $date = $row->getDate();
+        $target = $row->getPath();
 
         switch ($data['type']) {
             case 'other':
-                $this->addReferrer('other', $referrer, $date);
+                $this->addReferrer('other', $referrer, $target, $date);
                 break;
 
             case 'internals':
                 $this->internalCount++;
-                $this->addReferrer('internals', $referrer, $date);
+                if ($this->includeInternalTraffic) {
+                    $this->addReferrer('internals', $referrer, $target, $date);
+                }
                 break;
 
             case 'referrers':
                 $this->referredCount++;
-                $this->addReferrer('domains', $data['domain'], $date);
+                $this->addReferrer('domains', $data['domain'], false, $date);
 
-                if ($this->addReferrer('referrers', $referrer, $date)) {
+                if ($this->addReferrer('referrers', $referrer, $target, $date)) {
                     $this->referrers[$referrer]['domain'] = $data['domain'];
                     $this->domains[$data['domain']]['urls'][] = $referrer;
                 }
@@ -118,16 +132,13 @@ class ReferrerView implements DataView
         return true;
     }
 
-    private function addReferrer($type, $referrer, \DateTime $date)
+    private function addReferrer($type, $referrer, $target, \DateTime $date)
     {
         $new = false;
 
         if (isset($this->{$type}[$referrer])) {
             $this->{$type}[$referrer]['count']++;
-
-            if ($date->getTimestamp() > $this->{$type}[$referrer]['last']) {
-                $this->{$type}[$referrer]['last'] = $date->getTimestamp();
-            }
+            $this->{$type}[$referrer]['last'] = $date->getTimestamp();
         } else {
             $this->{$type}[$referrer] = [
                 'count' => 1,
@@ -136,6 +147,22 @@ class ReferrerView implements DataView
             ];
 
             $new = true;
+        }
+
+        if ($target !== false) {
+            $this->addReferrer('targets', $target, false, $date);
+
+            if (isset($this->targets[$target]['urls'][$referrer])) {
+                $this->targets[$target]['urls'][$referrer]++;
+            } else {
+                $this->targets[$target]['urls'][$referrer] = 1;
+            }
+
+            if (!isset($this->{$type}[$referrer]['targets'][$target])) {
+                $this->{$type}[$referrer]['targets'][$target] = 1;
+            } else {
+                $this->{$type}[$referrer]['targets'][$target]++;
+            }
         }
 
         $day = $date->format('Y-m-d');

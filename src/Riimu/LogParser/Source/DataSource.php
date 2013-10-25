@@ -9,7 +9,9 @@ namespace Riimu\LogParser\Source;
  */
 interface DataSource
 {
+    public function setParser(Parser\RowParser $parser);
     public function open();
     public function getNext();
     public function close();
+    public function getProgress();
 }

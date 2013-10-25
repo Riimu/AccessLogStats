@@ -40,6 +40,15 @@ class AccessLogRow implements LogRow
         return isset($row[$name]) ? $row[$name] : $default;
     }
 
+    public function getField($name)
+    {
+        if (!isset($this->$name)) {
+            throw new \InvalidArgumentException("Invalid field name: $field");
+        }
+
+        return $this->$name;
+    }
+
     public function getDomain()
     {
         return $this->domain;

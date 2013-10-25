@@ -7,14 +7,16 @@ namespace Riimu\LogParser\Filter;
  * @copyright Copyright (c) 2013, Riikka Kalliomäki
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class FilterDomain implements DataFilter
+class FilterField implements DataFilter
 {
-    private $domain;
+    private $name;
+    private $values;
 
-    public function __construct($domain)
+    public function __construct($name, $values)
     {
-        $this->domain = $domain;
-        $this->group = is_array($domain);
+        $this->name = $name;
+        $this->values = $values;
+        $this->group = is_array($values);
         $this->reverse = false;
     }
 
@@ -27,9 +29,9 @@ class FilterDomain implements DataFilter
     public function filter(\Riimu\LogParser\LogRow $row)
     {
         if ($this->group) {
-            $filter = in_array($row->getDomain(), $this->domain);
+            $filter = in_array($row->getField($this->name), $this->values);
         } else {
-            $filter = $row->getDomain() === $this->domain;
+            $filter = $row->getField($this->name) === $this->values;
         }
 
         return $this->reverse ? !$filter : $filter;

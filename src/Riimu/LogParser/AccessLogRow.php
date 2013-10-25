@@ -49,23 +49,36 @@ class AccessLogRow implements LogRow
         return $this->$name;
     }
 
+    public function getIp()
+    {
+        return $this->ip;
+    }
+
     public function getDomain()
     {
         return $this->domain;
     }
 
-    public function getReferrer()
-    {
-        return $this->referrer === '-' ? false : $this->referrer;
-    }
-
+    /**
+     * @return \DateTime
+     */
     public function getDate()
     {
         return new \DateTime($this->time);
     }
 
+    public function getCode()
+    {
+        return $this->code;
+    }
+
     public function getPath()
     {
         return $this->path;
+    }
+
+    public function getReferrer()
+    {
+        return $this->referrer === '-' ? false : $this->referrer;
     }
 }

@@ -10,8 +10,10 @@ namespace Riimu\LogParser;
 interface LogRow
 {
     public function getField($name);
+    public function getIp();
     public function getDomain();
-    public function getReferrer();
     public function getDate();
+    public function getCode();
     public function getPath();
+    public function getReferrer();
 }

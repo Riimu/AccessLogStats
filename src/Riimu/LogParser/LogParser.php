@@ -60,12 +60,15 @@ class LogParser
         }
 
         $seconds = time() - $startTime;
-        $min = floor($seconds / 60);
-        $sec = $seconds % 60;
-        $mem = round(memory_get_usage() / 1024 / 1024, 2);
-        $per = floor($this->source->getProgress() * 100);
 
-        echo "$rowNumber rows, $per%, $min min $sec sec, $mem mb" . PHP_EOL;
+        printf("%s rows (%d/s), %d%%, %d min %02d sec, %.2f mb (%db/row)" . PHP_EOL,
+            number_format($rowNumber, 0, '.', ','),
+            $rowNumber / $seconds,
+            $this->source->getProgress() * 100,
+            $seconds / 60,
+            $seconds % 60,
+            memory_get_usage() / 1024 / 1024,
+            memory_get_usage() / $rowNumber);
     }
 
     public function saveJSON()

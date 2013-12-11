@@ -17,6 +17,7 @@ class PatternParser implements RowParser
             '(?<protocol>[^ ]+)" (?<code>[^ ]+) (?<size>[^ ]+) ' .
             '"(?<referrer>[^"]+)" "(?<agent>[^"]+)"$/';
     }
+
     public function parseRow($row)
     {
         if (!preg_match($this->pattern, $row, $match)) {

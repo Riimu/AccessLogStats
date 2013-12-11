@@ -1,6 +1,25 @@
 {
+    "name": "riimu/accesslogstats",
+    "type": "library",
+    "description": "Access log parsing and statistics generation.",
+    "keywords": ["access", "log", "statistics"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Riikka Kalliomäki",
+            "email": "riikka.kalliomaki@gmail.com",
+            "homepage": "http://riimu.net",
+            "role": "Developer"
+        }
+    ],
     "require" : {
+        "php": ">=5.4.0",
         "riimu/kit-classloader" : "2.0.0",
         "riimu/kit-urlparser" : "1.0.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "Riimu\\LogParser": "src"
+        }
     }
 }

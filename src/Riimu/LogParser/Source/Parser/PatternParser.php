@@ -9,12 +9,16 @@ namespace Riimu\LogParser\Source\Parser;
  */
 class PatternParser implements RowParser
 {
+    private $pattern;
+    private $dataParser;
+
     public function __construct()
     {
+        $this->dataParser = new \Riimu\LogParser\DataParser();
         $this->pattern =
-            '/^(?<ip>[^ ]+) (?<domain>[^ ]+) (?<ident>[^ ]+) ' .
-            '\[(?<time>[^\]]+)\] "(?<method>[^ ]+) (?<path>[^"]+) ' .
-            '(?<protocol>[^ ]+)" (?<code>[^ ]+) (?<size>[^ ]+) ' .
+            '/^(?<ip>[^ ]+) (?<host>[^ ]+) (?<ident>[^ ]+) ' .
+            '\[(?<time>[^\]]+)\] "(?<method>[^" ]+) (?<path>[^"]+) ' .
+            '(?<protocol>[^" ]+)" (?<code>[^ ]+) (?<size>[^ ]+) ' .
             '"(?<referrer>[^"]+)" "(?<agent>[^"]+)"$/';
     }
 
@@ -25,6 +29,6 @@ class PatternParser implements RowParser
             return false;
         };
 
-        return new \Riimu\LogParser\AccessLogRow($match);
+        return new \Riimu\LogParser\LogRow($match, $this->dataParser);
     }
 }

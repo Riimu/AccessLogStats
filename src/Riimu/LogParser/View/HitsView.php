@@ -7,109 +7,109 @@ namespace Riimu\LogParser\View;
  * @copyright Copyright (c) 2013, Riikka Kalliomäki
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class HitsView implements DataView
+class HitsView extends DataView
 {
     private $lastSeen;
+    private $patterns;
+    private $paths;
+
     private $hits;
-    private $views;
-    private $uniques;
+    private $ips;
+    private $visitors;
     private $new;
-    private $pathCache;
-    private $pathPatterns;
+    private $views;
+    private $crawlers;
+    private $unknown;
 
     public function __construct()
     {
+        parent::__construct();
+        $this->setName('HitsView');
+
         $this->lastSeen = [];
+        $this->patterns = [];
+        $this->paths = [];
         $this->hits = [];
-        $this->views = [];
-        $this->uniques = [];
+        $this->ips = [];
+        $this->visitors = [];
         $this->new = [];
-        $this->pathCache = [];
-        $this->pathPatterns = [];
+        $this->views = [];
+        $this->crawlers = [];
+        $this->unknown = [];
     }
 
-    public function addPathPattern($pattern)
-    {
-        if (is_array($pattern)) {
-            $this->pathPatterns = array_merge($this->pathPatterns, $pattern);
-        } else {
-            $this->pathPatterns[] = $pattern;
-        }
-
-        return $this;
-    }
-
-    public function getData()
+    public function getViewData()
     {
         return [
-            'ipCount' => count($this->lastSeen),
-            'hitCount' => array_sum($this->hits),
-            'viewCount' => array_sum($this->views),
-            'uniqueCount' => array_sum($this->uniques),
-            'newCount' => array_sum($this->new),
             'hits' => $this->hits,
-            'views' => $this->views,
-            'uniques' => $this->uniques,
+            'ips' => $this->ips,
+            'visitors' => $this->visitors,
             'new' => $this->new,
-            'pathCache' => [
-                'true' => array_keys($this->pathCache, true),
-                'false' => array_keys($this->pathCache, false),
-            ],
+            'views' => $this->views,
+            'crawlers' => $this->crawlers,
         ];
     }
 
-    public function getName()
+    public function getDebugData()
     {
-        return 'HitsView';
+        $included = array_keys($this->paths, true);
+        $excluded = array_keys($this->paths, false);
+
+        sort($included);
+        sort($excluded);
+
+        return [
+            'unknown' => $this->unknown,
+            'paths' => [
+                'included' => $included,
+                'excluded' => $excluded,
+            ]
+        ];
+    }
+
+    public function addExcludePattern($pattern)
+    {
+        $this->patterns[] = $pattern;
+        return $this;
     }
 
     public function processRow(\Riimu\LogParser\LogRow $row)
     {
+        $day = $row->getDay();
+        $agent = $row->getBrowser();
         $ip = $row->getIp();
-        $date = $row->getDate();
-        $day = $date->format('Y-m-d');
+
+        $this->increment($this->hits[$day]);
 
         if (!isset($this->lastSeen[$ip])) {
-            $unique = true;
-            $new = true;
+            $this->increment($this->ips[$day]);
+        }
+
+        if ($agent === null) {
+            $this->increment($this->unknown[$day]);
+        } elseif ($agent->Crawler) {
+            $this->increment($this->crawlers[$day]);
         } else {
-            if ($this->lastSeen[$ip]->format('Y-m-d') != $day) {
-                $unique = true;
-                $new = $this->isNewVisit($date, $this->lastSeen[$ip]);
+            if (!isset($this->lastSeen[$ip])) {
+                $this->increment($this->visitors[$day]);
+                $this->increment($this->new[$day]);
             } else {
-                $unique = false;
+                if ($this->lastSeen[$ip]->format('Y-m-d') !== $day) {
+                    $this->increment($this->visitors[$day]);
+                }
+                if ($row->getDate()->modify('-7 days today')->getTimestamp() >
+                    $this->lastSeen[$ip]->getTimestamp()) {
+                    $this->increment($this->new[$day]);
+                }
+
+                if ($this->isPageView($row)) {
+                    $this->increment($this->views[$day]);
+                }
             }
         }
 
-        if (!isset($this->hits[$day])) {
-            $this->hits[$day] = 0;
-            $this->uniques[$day] = 0;
-            $this->new[$day] = 0;
-            $this->views[$day] = 0;
-        }
-
-        $this->lastSeen[$row->getIp()] = $row->getDate();
-        $this->hits[$day]++;
-
-        if ($unique) {
-            $this->uniques[$day]++;
-
-            if ($new) {
-                $this->new[$day]++;
-            }
-        }
-
-        if ($this->isPageView($row)) {
-            $this->views[$day]++;
-        }
-    }
-
-    private function isNewVisit(\DateTime $current, \DateTime $previous)
-    {
-        $compare = clone $current;
-        $compare->modify("-7 days");
-        $compare->modify("today");
-        return $compare->getTimestamp() > $previous->getTimestamp();
+        $this->lastSeen[$ip] = $row->getDate();
+        return true;
     }
 
     private function isPageView(\Riimu\LogParser\LogRow $row)
@@ -120,16 +120,17 @@ class HitsView implements DataView
 
         $path = $row->getPath();
 
-        if (isset($this->pathCache[$path])) {
-            return $this->pathCache[$path];
-        }
+        if (!isset($this->paths[$path])) {
+            $this->paths[$path] = true;
 
-        foreach ($this->pathPatterns as $pattern) {
-            if (preg_match($pattern, $path)) {
-                return $this->pathCache[$path] = false;
+            foreach ($this->patterns as $pattern) {
+                if (preg_match($pattern, $path)) {
+                    $this->paths[$path] = false;
+                    break;
+                }
             }
         }
 
-        return $this->pathCache[$path] = true;
+        return $this->paths[$path];
     }
 }

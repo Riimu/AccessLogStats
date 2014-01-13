@@ -1,0 +1,35 @@
+[
+    {
+        "name" : "Ask",
+        "domain" : "www.search.ask.com",
+        "type" : "search"
+    },
+    {
+        "name" : "Baidu",
+        "domain" : "www.baidu.com",
+        "type" : "search"
+    },
+    {
+        "name" : "Bing",
+        "domain" : "www.bing.com",
+        "type" : "search"
+    },
+    {
+        "name" : "Daum",
+        "domain" : "search.daum.net",
+        "type" : "search"
+    },
+    {
+        "name" : "Google",
+        "domains" : [
+            "www.google.com",
+            "www.google.co.uk",
+            "www.google.com.ph",
+            "www.google.ee",
+            "www.google.fi",
+            "www.google.fr",
+            "www.google.se"
+        ],
+        "type" : "search"
+    }
+]

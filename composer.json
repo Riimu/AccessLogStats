@@ -15,7 +15,8 @@
     "require" : {
         "php": ">=5.4.0",
         "riimu/kit-classloader" : "2.0.0",
-        "riimu/kit-urlparser" : "1.0.0"
+        "riimu/kit-urlparser" : "1.0.0",
+        "browscap/browscap-php" : "dev-master"
     },
     "autoload": {
         "psr-0": {

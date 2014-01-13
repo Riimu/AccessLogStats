@@ -85,14 +85,15 @@ class LogParser
                 $this->sanitizePath($report->getName()));
 
             foreach ($report->getViews() as $view) {
-                $fname = $path . DIRECTORY_SEPARATOR . $this->sanitizePath($view->getName()) . ".json";
+                $fname = $path . DIRECTORY_SEPARATOR . $this->sanitizePath($view->getName());
                 $reportInfo['views'][] = [
                     'name' => $view->getName(),
                     'type' => get_class($view),
-                    'file' => $fname,
+                    'file' => "$fname.json",
                 ];
 
-                file_put_contents($fname, json_encode($view->getData(), JSON_PRETTY_PRINT));
+                file_put_contents("$fname.json", json_encode($view->getViewData(), JSON_PRETTY_PRINT));
+                file_put_contents("$fname.debug.json", json_encode($view->getDebugData(), JSON_PRETTY_PRINT));
             }
 
             $info[] = $reportInfo;

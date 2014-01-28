@@ -21,12 +21,10 @@ class ReferrerParser
         $domain = $url->getHostname();
 
         foreach ($this->data as $object) {
-            if (isset($object['domain']) && $object['domain'] !== $domain) {
-                continue;
-            } elseif (isset($object['domains']) && !in_array($domain, $object['domains'])) {
+            if (isset($object['domain']) && !in_array($domain, (array) $object['domain'])) {
                 continue;
             }
-            
+
             return new ReferrerInfo($object);
         }
 

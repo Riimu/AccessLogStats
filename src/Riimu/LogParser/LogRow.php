@@ -105,10 +105,4 @@ class LogRow
         $browser = $this->getBrowser();
         return $browser !== null && $browser->Crawler;
     }
-
-    public function isSearchReferrer()
-    {
-        $referrer = $this->getReferrerInfo();
-        return $referrer !== null && $referrer->getType() === 'search';
-    }
 }

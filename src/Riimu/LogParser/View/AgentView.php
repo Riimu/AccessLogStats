@@ -65,7 +65,7 @@ class AgentView extends DataView
         $agent = $row->getUserAgent();
 
         if ($agent === null) {
-            $this->NoUserAgent++;
+            $this->noUserAgent++;
             return true;
         }
 

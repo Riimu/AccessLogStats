@@ -18,6 +18,7 @@ class LinksView extends DataView
     private $invalidReferrers;
     private $internalReferrers;
     private $searchReferrers;
+    private $spamReferrers;
 
     private $internalDomains;
 
@@ -34,6 +35,7 @@ class LinksView extends DataView
         $this->invalidReferrers = [];
         $this->internalReferrers = [];
         $this->searchReferrers = [];
+        $this->spamReferrers = [];
 
         $this->internalDomains = [];
     }
@@ -71,11 +73,13 @@ class LinksView extends DataView
         $invalid = $this->invalidReferrers;
         $internal = $this->internalReferrers;
         $search = $this->searchReferrers;
+        $spam = $this->spamReferrers;
 
         ksort($crawler);
         ksort($invalid);
         ksort($internal);
         ksort($search);
+        ksort($spam);
 
         return [
             'missingReferrer' => $this->noReferrer,
@@ -83,6 +87,7 @@ class LinksView extends DataView
             'invalid' => $invalid,
             'internal' => $internal,
             'search' => $search,
+            'spam' => $spam,
         ];
     }
 
@@ -105,12 +110,16 @@ class LinksView extends DataView
 
         if (!isset($this->referrers[$url])) {
             $info = $row->getUrlInfo();
+            $referrer = $row->getReferrerInfo();
 
             if (!$info) {
                 $this->increment($this->invalidReferrers[$url]);
                 return true;
-            } elseif ($row->isSearchReferrer()) {
+            } elseif ($referrer->getType() === 'search') {
                 $this->increment($this->searchReferrers[$url]);
+                return true;
+            } elseif ($referrer->getType() === 'spam') {
+                $this->increment($this->spamReferrers[$url]);
                 return true;
             }
 

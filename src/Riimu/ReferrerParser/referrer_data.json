@@ -1,35 +1,206 @@
 [
     {
-        "name" : "Ask",
-        "domain" : "www.search.ask.com",
-        "type" : "search"
+        "name": "4chan",
+        "type": "social",
+        "domain": "boards.4chan.org"
     },
     {
-        "name" : "Baidu",
-        "domain" : "www.baidu.com",
-        "type" : "search"
+        "name": "akama",
+        "type": "spam",
+        "domain": "www.akama.com"
     },
     {
-        "name" : "Bing",
-        "domain" : "www.bing.com",
-        "type" : "search"
+        "name": "Ask",
+        "type": "search",
+        "domain": [
+            "search.tb.ask.com",
+            "uk.ask.com",
+            "us.search.yahoo.com",
+            "us.yhs4.search.yahoo.com",
+            "www.search.ask.com"
+        ]
     },
     {
-        "name" : "Daum",
-        "domain" : "search.daum.net",
-        "type" : "search"
+        "name": "Baidu",
+        "type": "search",
+        "domain": "www.baidu.com"
     },
     {
-        "name" : "Google",
-        "domains" : [
-            "www.google.com",
+        "name": "Bing",
+        "type": "search",
+        "domain": [
+            "cc.bingj.com",
+            "cn.bing.com",
+            "www.bing.com"
+        ]
+    },
+    {
+        "name": "Delta Search",
+        "type": "search",
+        "domain": "www2.delta-search.com"
+    },
+    {
+        "name": "Download Search Engine",
+        "type": "spam",
+        "domain": [
+            "ddlmega.net",
+            "eurofiles.in"
+        ]
+    },
+    {
+        "name": "DuckDuckGo",
+        "type": "search",
+        "domain": [
+            "duckduckgo.com",
+            "r.duckduckgo.com"
+        ]
+    },
+    {
+        "name": "Facebook",
+        "type": "social",
+        "domain": [
+            "m.facebook.com",
+            "www.facebook.com"
+        ]
+    },
+    {
+        "name": "Google",
+        "type": "search",
+        "domain": [
+            "www.google.at",
+            "www.google.be",
+            "www.google.bg",
+            "www.google.by",
+            "www.google.ca",
+            "www.google.ch",
+            "www.google.cl",
+            "www.google.co.il",
+            "www.google.co.in",
+            "www.google.co.jp",
+            "www.google.co.kr",
+            "www.google.co.nz",
+            "www.google.co.th",
             "www.google.co.uk",
+            "www.google.co.ve",
+            "www.google.co.za",
+            "www.google.com",
+            "www.google.com.ar",
+            "www.google.com.au",
+            "www.google.com.bh",
+            "www.google.com.br",
+            "www.google.com.co",
+            "www.google.com.gt",
+            "www.google.com.hk",
+            "www.google.com.mt",
+            "www.google.com.mx",
+            "www.google.com.my",
+            "www.google.com.pe",
             "www.google.com.ph",
+            "www.google.com.pr",
+            "www.google.com.sg",
+            "www.google.com.tr",
+            "www.google.com.tw",
+            "www.google.com.ua",
+            "www.google.com.uy",
+            "www.google.cz",
+            "www.google.de",
+            "www.google.dk",
             "www.google.ee",
+            "www.google.es",
             "www.google.fi",
             "www.google.fr",
-            "www.google.se"
-        ],
-        "type" : "search"
+            "www.google.gr",
+            "www.google.hr",
+            "www.google.hu",
+            "www.google.ie",
+            "www.google.is",
+            "www.google.it",
+            "www.google.jo",
+            "www.google.kz",
+            "www.google.lt",
+            "www.google.lv",
+            "www.google.nl",
+            "www.google.no",
+            "www.google.pl",
+            "www.google.pt",
+            "www.google.ro",
+            "www.google.rs",
+            "www.google.ru",
+            "www.google.se",
+            "www.google.si",
+            "www.google.sk"
+        ]
+    },
+    {
+        "name": "orkut",
+        "type": "social",
+        "domain": [
+            "www.orkut.com",
+            "www.orkut.com.br"
+        ]
+    },
+    {
+        "name": "Pinterest",
+        "type": "social",
+        "domain": "www.pinterest.com"
+    },
+    {
+        "name": "reddit",
+        "type": "social",
+        "domain": [
+            "dd.reddit.com",
+            "en.reddit.com",
+            "fr.reddit.com",
+            "www.reddit.com"
+        ]
+    },
+    {
+        "name": "Sleipnir Start",
+        "type": "search",
+        "domain": "search.fenrir-inc.com"
+    },
+    {
+        "name": "Snap.do",
+        "type": "search",
+        "domain": "search.snapdo.com"
+    },
+    {
+        "name": "Stumbleupon",
+        "type": "social",
+        "domain": "www.stumbleupon.com"
+    },
+    {
+        "name": "Swagbucks",
+        "type": "search",
+        "domain": [
+            "search.swagbucks.com",
+            "www.swagbucks.com"
+        ]
+    },
+    {
+        "name": "SweetPacks Search",
+        "type": "search",
+        "domain": "www.sweetpacks-search.com"
+    },
+    {
+        "name": "Twitter",
+        "type": "social",
+        "domain": "t.co"
+    },
+    {
+        "name": "Yahoo",
+        "type": "search",
+        "domain": [
+            "ca.search.yahoo.com",
+            "realtime.search.yahoo.co.jp",
+            "search.yahoo.co.jp",
+            "search.yahoo.com",
+            "tw.search.yahoo.com"
+        ]
+    },
+    {
+        "name": "Yandex",
+        "type": "search",
+        "domain": "yandex.ru"
     }
 ]

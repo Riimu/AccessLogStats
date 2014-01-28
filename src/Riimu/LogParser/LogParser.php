@@ -50,12 +50,13 @@ class LogParser
             }
         }
 
+        $this->reportProgress($rowNumber, $startTime, true);
         $this->source->close();
     }
 
-    private function reportProgress($rowNumber, $startTime)
+    private function reportProgress($rowNumber, $startTime, $final = false)
     {
-        if ($rowNumber % 10000) {
+        if ($rowNumber % 10000 && !$final) {
             return;
         }
 
@@ -64,7 +65,7 @@ class LogParser
         printf("%s rows (%d/s), %d%%, %d min %02d sec, %.2f mb (%db/row)" . PHP_EOL,
             number_format($rowNumber, 0, '.', ','),
             $rowNumber / $seconds,
-            $this->source->getProgress() * 100,
+            $final ? 100 : $this->source->getProgress() * 100,
             $seconds / 60,
             $seconds % 60,
             memory_get_usage() / 1024 / 1024,
